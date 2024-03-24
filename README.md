@@ -11,6 +11,8 @@
 
 This is a partial publication of a private repo. As such doesn't include live strategies or other sensitive information. 
 
+For your own use, considering forking this into a private repository to add your own strategies and secrets.
+
 Whilst it may contain references from non-public code, I'll attempt to keep this to a minimum and keep this repository up to date.
 
 This repository contains the setup and configuration for two "systems":

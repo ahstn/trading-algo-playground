@@ -63,4 +63,4 @@ docker compose run --rm freqtrade hyperopt \
 [./config.json]: ./config.json
 [Freqtrade]: https://www.freqtrade.io/
 [Hyperopt | Freqtrade]: https://www.freqtrade.io/en/stable/hyperopt/
-[Loss Functions | HyperOpt] : https://www.freqtrade.io/en/stable/hyperopt/#loss-functions
+[Loss Functions | HyperOpt]: https://www.freqtrade.io/en/stable/hyperopt/#loss-functions

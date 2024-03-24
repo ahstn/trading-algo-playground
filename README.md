@@ -1,7 +1,17 @@
 # Trading Algo Playground
 
 [![forthebadge](https://forthebadge.com/images/featured/featured-made-with-crayons.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)](https://forthebadge.com)
 
+> [!WARNING]
+>
+> This repository is intended for educational purposes only. It is not intended to be used for live trading. Use at your own risk.
+
+### Overview
+
+This is a partial publication of a private repo. As such doesn't include live strategies or other sensitive information. 
+
+Whilst it may contain references from non-public code, I'll attempt to keep this to a minimum and keep this repository up to date.
 
 This repository contains the setup and configuration for two "systems":
 - Boilerplate setup for [Freqtrade]
@@ -20,7 +30,7 @@ Freqtrade is a free, open source crypto trading bot written in Python. Built wit
 
 These are simple python script intended to be deployed to GCP Functions and listen for TradingView Webhooks. Upon receiving a webhook, the script will execute a trade based on the JSON body passed. 
 
-As these are simple "executors", it's important you have a good understanding of your strategy practice proper risk management with sizing.
+As these are simple "executors", it's important you have a good understanding of your strategy and practice proper risk management with sizing.
 
 [Freqtrade]: https://github.com/freqtrade/freqtrade
 [GCP Functions]: https://cloud.google.com/functions

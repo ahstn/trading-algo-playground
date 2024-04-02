@@ -43,6 +43,35 @@ curl --request POST \
 Keep in mind, if your code is pointed to the "live" exchange, and not the "testnet", this will execute "real" trades.
 
 
+## State Machine
+
+```mermaid
+graph TD
+    Start --> IsPositionFlat{Webook JSON<br>Desired Position == Flat?}
+
+    IsPositionFlat -->|Yes| HasExistingPosition{Check Exchange<br>Has Existing Position?}
+    HasExistingPosition -->|Yes| ClosePosition[Close Existing Position<br>Cancel Orders]
+    HasExistingPosition -->|No| NoAction[No Action Required]
+
+    IsPositionFlat -->|No| IsPositionOpen{Webook JSON<br>Previous Position == Flat?}
+    IsPositionOpen -->|Yes| OpenPosition[Open New Position]
+    IsPositionOpen -->|No| IsReversingPosition{Webook JSON<br>Reversing Position?}
+
+    IsReversingPosition -->|Yes| HasMatchingPosition{Check Exchange<br>Has Matching Position?}
+    HasMatchingPosition -->|Yes| ReversePosition[Reverse Position with Double Size<br>Cancel Orders]
+    HasMatchingPosition -->|No| OpenNewPosition[Open New Position]
+
+    IsReversingPosition -->|No| AdjustPosition[Adjust Existing Position<br>Cancel Orders<br>Ensure reduce_only = true]
+
+    ClosePosition --> FinishOrder
+    NoAction --> FinishOrder
+    OpenPosition --> FinishOrder
+    ReversePosition --> FinishOrder
+    OpenNewPosition --> FinishOrder
+    AdjustPosition --> FinishOrder
+    FinishOrder[Finish Order Execution]
+```
+
 [functions-framework-python]: https://github.com/GoogleCloudPlatform/functions-framework-python
 [Deploy HTTP Function with Python | Google Docs]: https://cloud.google.com/functions/docs/create-deploy-http-python
 [hyperliquid-python-sdk | GitHub]: https://github.com/hyperliquid-dex/hyperliquid-python-sdk

@@ -1,7 +1,8 @@
 {
   "id": "{{strategy.order.id}}",
+  {{strategy.order.alert_message}}
   "action": "{{strategy.order.action}}",
-  "contracts": "{{strategy.order.contracts}}",
+  "contracts": {{strategy.order.contracts}},
   "ticker": "{{ticker}}",
   "position": "{{strategy.market_position}}",
   "previous_position": "{{strategy.prev_market_position}}",

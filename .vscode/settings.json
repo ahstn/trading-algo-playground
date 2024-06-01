@@ -3,4 +3,10 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "charliermarsh.ruff"
   }
+  "[rust]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "rust-analyzer"
+
+    "rust-analyzer.check.command": "clippy",
+  }
 }

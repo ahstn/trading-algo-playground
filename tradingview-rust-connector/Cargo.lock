@@ -3203,6 +3203,7 @@ dependencies = [
  "anyhow",
  "axum",
  "axum-macros",
+ "ethers",
  "hyperliquid_rust_sdk",
  "serde",
  "serde_json",

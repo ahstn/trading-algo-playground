@@ -12,3 +12,7 @@ freqtrade/logs/
 freqtrade/plot/
 freqtrade/strategies/*.json
 freqtrade/config-*.json
+
+
+# rust connector
+tradingview-rust-connector/target/

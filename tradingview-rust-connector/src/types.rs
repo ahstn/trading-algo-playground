@@ -13,19 +13,21 @@ pub enum Action {
     Sell,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct Order {
-    id: String,
-    action: Action,
-    contracts: f64,
-    ticker: String,
-    position: Position,
-    previous_position: Position,
-    position_size: f64,
-    price: f64,
+    pub id: String,
+    pub action: Action,
+    pub contracts: f64,
+    pub ticker: String,
+    pub position: Position,
+    pub previous_position: Position,
+    pub position_size: f64,
+    pub price: f64,
+    pub reduce: bool
 }
 
 impl Order {
+    
     fn normalise_ticker(&self, ticker: &str) -> String {
         if !ticker.contains("USD") {
             panic!("Ticker must be denominated in USD");
@@ -39,7 +41,7 @@ impl Order {
               .replace("/", "")
     }
 
-    fn is_buy(&self) -> bool {
+    pub fn is_buy(&self) -> bool {
         matches!(self.action, Action::Buy)
     }
 
@@ -47,7 +49,7 @@ impl Order {
         matches!((self.previous_position, self.position), (Position::Short, Position::Long) | (Position::Long, Position::Short))
     }
 
-    fn is_close_position(&self) -> bool {
+    pub fn is_close_position(&self) -> bool {
         self.previous_position != Position::Flat && self.position == Position::Flat
     }
 

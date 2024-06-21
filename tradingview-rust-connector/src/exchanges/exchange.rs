@@ -13,7 +13,7 @@ pub trait Exchange {
     /// # Returns
     ///
     /// A dictionary containing the result of the order placement.
-    fn place_order(&self, asset: &str, order: Order, reduce_only: bool) -> std::collections::HashMap<String, String>;
+    async fn place_order(&self, order: Order) -> anyhow::Result<serde_json::Value>;
 
     /// Cancel existing orders for the given asset.
     ///
@@ -46,5 +46,5 @@ pub trait Exchange {
     /// # Returns
     ///
     /// `true` if there is an open position, `false` otherwise.
-    fn has_open_position(&self, asset: &str) -> Position;
+    async fn has_open_position(&self, asset: &str) -> anyhow::Result<Position>;
 }

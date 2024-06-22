@@ -4,7 +4,7 @@ use hyperliquid_rust_sdk::{
 use round::round;
 use ethers::signers::{LocalWallet, Signer};
 use serde_json::json;
-
+ use std::collections::HashMap;
 use crate::exchanges::exchange::Exchange;
 use crate::types::{Order, Position};
 
@@ -20,6 +20,9 @@ struct Hyperliquid {
     client: ExchangeClient,
     info: InfoClient,
     pub wallet: LocalWallet,
+
+    // Local Cache of common asset precisions
+    size_decimals: HashMap<String, i32>,
 }
 
 impl From<Order> for ClientOrderRequest {
@@ -53,7 +56,16 @@ impl Hyperliquid {
         let client = ExchangeClient::new(None, wallet.clone(), Some(url), None, None).await?;
         let info = InfoClient::new(None, Some(url)).await?;
 
-        Ok(Hyperliquid { client, info, wallet })
+        let mut size_decimals = HashMap::new();
+         size_decimals.insert("SOL".to_string(), 2);
+         size_decimals.insert("INJ".to_string(), 1);
+         size_decimals.insert("SUI".to_string(), 1);
+         size_decimals.insert("RNDR".to_string(), 1);
+         size_decimals.insert("FTM".to_string(), 0);
+         size_decimals.insert("PENDLE".to_string(), 0);
+         size_decimals.insert("ONDO".to_string(), 0);
+
+        Ok(Hyperliquid { client, info, wallet, size_decimals })
     }
 
     /// Hyperliquid requires contracts to be rounded to a specific decimal place

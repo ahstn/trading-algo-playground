@@ -24,7 +24,7 @@ pub trait Exchange {
     /// # Returns
     ///
     /// `true` if orders were successfully canceled, `false` otherwise.
-    fn cancel_existing_orders(&self, asset: &str) -> bool;
+    async fn cancel_existing_orders(&self, asset: &str) -> anyhow::Result<bool>;
 
     /// Close existing positions for the given asset.
     ///

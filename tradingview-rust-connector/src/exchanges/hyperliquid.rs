@@ -1,5 +1,5 @@
 use hyperliquid_rust_sdk::{
-    BaseUrl, ClientOrder, ClientLimit, ClientOrderRequest, ExchangeClient, InfoClient, ExchangeResponseStatus
+    BaseUrl, ClientCancelRequest, ClientLimit, ClientOrder, ClientOrderRequest, ExchangeClient, ExchangeResponseStatus, InfoClient
 };
 use round::round;
 use ethers::signers::{LocalWallet, Signer};
@@ -19,7 +19,7 @@ enum asset_precision {
 struct Hyperliquid {
     client: ExchangeClient,
     info: InfoClient,
-    wallet: LocalWallet,
+    pub wallet: LocalWallet,
 }
 
 impl From<Order> for ClientOrderRequest {
@@ -89,24 +89,27 @@ impl Exchange for Hyperliquid {
         }
     }
 
-    fn cancel_existing_orders(&self, asset: &str) -> bool {
+    async fn cancel_existing_orders(&self, asset: &str) -> anyhow::Result<bool> {
         // let mut orders = Vec::new();
-        // match self.info.open_orders(&self.account.address) {
-        //     Ok(open_orders) => {
-        //         for order in open_orders.as_array().unwrap() {
-        //             if order["coin"].as_str().unwrap() == asset {
-        //                 println!("- canceling order {} {} for {}", order["side"].as_str().unwrap(), order["oid"].as_str().unwrap(), order["coin"].as_str().unwrap());
-        //                 self.exchange.cancel(order["coin"].as_str().unwrap(), order["oid"].as_str().unwrap());
-        //                 orders.push(order["oid"].as_str().unwrap().to_string());
-        //             }
-        //         }
-        //     }
-        //     Err(e) => {
-        //         eprintln!("Failed to get user state, or cancel order: {}", e);
-        //     }
-        // }
-        // orders
-        todo!()
+        match self.info.open_orders(self.wallet.address()).await {
+            Ok(open_orders) => {
+                for order in open_orders {
+                    if order.coin == asset {
+                        println!("- canceling order {} {} for {}", order.side, order.oid, order.coin);
+                        
+                        let cancel = ClientCancelRequest {
+                            oid: order.oid,
+                            asset: order.coin,
+                        };
+                        self.client.cancel(cancel, None).await?;
+                    }
+                }
+                Ok(false)
+            }
+            Err(e) => {
+                Err(anyhow::anyhow!("Failed to get user state, or cancel order: {}", e))
+            }
+        }
     }
 
     fn close_positions(&self, asset: &str) -> bool {
